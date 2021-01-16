@@ -100,7 +100,7 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>ZachCore</artifactId>
-            <version>0.7.15</version>
+            <version>0.7.16</version>
         </dependency>
         <!-- PlaceholderAPI -->
         <dependency>

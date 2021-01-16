@@ -5,3 +5,7 @@ api-version: 1.13
 softdepend: [ CrackShot, Vault, PlaceholderAPI ]
 authors: [ Zach_FR ]
 description: Duel your friends with this plugin
+
+commands:
+  duel:
+    description: Duel command

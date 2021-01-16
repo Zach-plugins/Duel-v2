@@ -1,6 +1,6 @@
 package me.zachary.duel;
 
-import me.zachary.duel.commands.TestCommand;
+import me.zachary.duel.commands.CommandManager;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 
@@ -11,7 +11,7 @@ public final class Duel extends ZachCorePlugin {
     public void onEnable() {
         zachGUI = new ZachGUI(this);
 
-        new TestCommand(this);
+        new CommandManager(this);
 
         preEnable();
     }
