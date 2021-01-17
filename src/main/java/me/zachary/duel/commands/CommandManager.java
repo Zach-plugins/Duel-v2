@@ -1,6 +1,7 @@
 package me.zachary.duel.commands;
 
 import me.zachary.duel.Duel;
+import me.zachary.duel.gui.RequestGui;
 import me.zachary.zachcore.commands.SubCommand;
 import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.command.*;
@@ -25,7 +26,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private void registerSubCommands() {
         commands = Arrays.asList(
-                new HelpCommand()
+                new HelpCommand(),
+                new CreateArenaCommand(plugin)
         );
     }
 
@@ -41,7 +43,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 if(player == null){
                     sender.sendMessage("You need to be a player to execute this command.");
                 }else{
-                    // TODO: Here will be open the request gui
+                    player.openInventory(new RequestGui(plugin).getRequestGUI(player));
                 }
                 return true;
             }

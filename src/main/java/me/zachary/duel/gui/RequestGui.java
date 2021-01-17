@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 public class RequestGui {
@@ -21,7 +20,7 @@ public class RequestGui {
         this.plugin = plugin;
     }
 
-    public Inventory getRequestGUI(){
+    public Inventory getRequestGUI(Player player){
         ZMenu requestGui = Duel.getGUI().create("&6&lRequest duel", 5);
         requestGui.setPaginationButtonBuilder(getPaginationButtonBuilder());
         setGlass(requestGui, 0);
@@ -30,15 +29,18 @@ public class RequestGui {
         Bukkit.getServer().getOnlinePlayers().toArray(players);
         int slot = 10;
         int page = 0;
-        for (Player player : players) {
-            ItemBuilder skullItem = new ItemBuilder(SkullUtils.getSkull(player.getUniqueId()))
-                    .name("&e" + player.getName())
+        for (Player p : players) {
+            if(p == player) continue;
+            ItemBuilder skullItem = new ItemBuilder(SkullUtils.getSkull(p.getUniqueId()))
+                    .name("&e" + p.getName())
                     .lore(
                             "&2Wins: 0",
                             "&cLoses: 0"
                     );
             ZButton skull = new ZButton(skullItem.build()).withListener(inventoryClickEvent -> {
-
+                plugin.players.put(p, player);
+                player.closeInventory();
+                p.openInventory(new AcceptGui(plugin).getAcceptGui(p, player));
             });
 
             requestGui.setButton(page, slot, skull);
