@@ -6,18 +6,12 @@ import me.zachary.duel.utils.LocationUtils;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.ChatPromptUtils;
-import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.Inventory;
-
-import java.util.Set;
 
 public class EditArenaGui {
     private Duel plugin;
@@ -141,7 +135,7 @@ public class EditArenaGui {
                         "&7Click here to",
                         "&7delete arena."
                 ).build()).withListener(inventoryClickEvent -> {
-            inventoryClickEvent.getWhoClicked().openInventory(new ConfirmGui(plugin).getConfirm((Player) inventoryClickEvent.getWhoClicked(), "&6Confirmation", "&cThis will permanently delete &c&lTest&c.", "&7Click here to cancel arena deletion.", () -> {
+            inventoryClickEvent.getWhoClicked().openInventory(new ConfirmGui(plugin).getConfirmGui((Player) inventoryClickEvent.getWhoClicked(), "&6Confirmation", "&cThis will permanently delete &c&lTest&c.", "&7Click here to cancel arena deletion.", () -> {
                 plugin.getArenaManager().deleteArena(arena);
             }));
         });

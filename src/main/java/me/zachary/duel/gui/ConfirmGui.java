@@ -18,7 +18,7 @@ public class ConfirmGui {
         this.plugin = plugin;
     }
 
-    public Inventory getConfirm(Player player, String guiName, String confirmButtonLore, String denyButtonLore, Runnable runnable) {
+    public Inventory getConfirmGui(Player player, String guiName, String confirmButtonLore, String denyButtonLore, Runnable runnable) {
         ZMenu confirmGui = Duel.getGUI().create(guiName, 3);
         confirmGui.setAutomaticPaginationEnabled(false);
 
