@@ -2,6 +2,7 @@ package me.zachary.duel.arenas;
 
 import me.zachary.duel.Duel;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public class Arena {
     private Location loc2;
     private List<Player> players;
     private String arenaName;
+    private String worldName;
+    private Material material;
     private boolean isStarted;
     private Duel plugin;
 
@@ -19,10 +22,11 @@ public class Arena {
         this.plugin = plugin;
     }
 
-    public Arena(String arenaName, Location loc1, Location loc2) {
+    public Arena(String arenaName, Material material, Location loc1, Location loc2) {
         this.loc1 = loc1;
         this.loc2 = loc2;
         this.arenaName = arenaName;
+        this.material = material;
         restart();
     }
 
@@ -40,6 +44,14 @@ public class Arena {
 
     public String getArenaName(){
         return arenaName;
+    }
+
+    public String getWorldName(){
+        return loc1.getWorld().getName();
+    }
+
+    public Material getMaterial(){
+        return material;
     }
 
     public boolean isStarted() {

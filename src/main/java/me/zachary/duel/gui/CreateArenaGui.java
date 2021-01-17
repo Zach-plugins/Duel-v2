@@ -9,6 +9,7 @@ import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -75,9 +76,10 @@ public class CreateArenaGui {
                         "&7Click here to",
                         "&7create arena."
                 ).build()).withListener(inventoryClickEvent -> {
-            Arena arena = new Arena(arenaName, loc1, loc2);
+            Arena arena = new Arena(arenaName, Material.valueOf("GRASS_BLOCK"), loc1, loc2);
             plugin.arenaConfig.set("arenas." + arenaName + ".loc1", LocationUtils.unparseLocToString(loc1));
             plugin.arenaConfig.set("arenas." + arenaName + ".loc2", LocationUtils.unparseLocToString(loc2));
+            plugin.arenaConfig.set("arenas." + arenaName + ".material", "GRASS_BLOCK");
             plugin.arenaConfig.set("arenas." + arenaName + ".world", world);
 
             plugin.saveArenaConfig();

@@ -2,6 +2,8 @@ package me.zachary.duel.arenas;
 
 import me.zachary.duel.Duel;
 import me.zachary.duel.utils.LocationUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -25,11 +27,12 @@ public class ArenaManager {
                 String loc1 = (String) plugin.getConfigurationSection().get(string + ".loc1");
                 String loc2 = (String) plugin.getConfigurationSection().get(string + ".loc2");
                 String world = (String) plugin.getConfigurationSection().get(string + ".world");
-                Arena arena = new Arena(string, LocationUtils.parseStringToLoc(loc1, world), LocationUtils.parseStringToLoc(loc2, world));
+                String material = (String) plugin.getConfigurationSection().get(string + ".material");
+                Arena arena = new Arena(string, Material.valueOf(material), LocationUtils.parseStringToLoc(loc1, world), LocationUtils.parseStringToLoc(loc2, world));
                 this.addArena(arena);
             }
         }
-        catch(Exception e) {
+        catch(Exception ex) {
             System.out.println("You don't have create arena yet!");
         }
     }
@@ -49,6 +52,11 @@ public class ArenaManager {
         this.arenas.add(arena);
     }
 
+    public void reloadArena(){
+        clearArena();
+        loadArena();
+    }
+
     public List<Arena> getArenas(){
         return arenas;
     }
@@ -58,6 +66,24 @@ public class ArenaManager {
             if (arena.getPlayers().contains(player))
                 return arena;
         return null;
+    }
+
+    public Arena getArenaByName(String arenaName) {
+        for (Arena arena : arenas)
+            if (arena.getArenaName().equals(arenaName))
+                return arena;
+        return null;
+    }
+
+    public void deleteArena(Arena arena) {
+        for(String string : plugin.getConfigurationSection().getKeys(false)) {
+            if(arena.getArenaName().equals(string)){
+                plugin.arenaConfig.set("arenas." + string, null);
+                plugin.saveArenaConfig();
+                clearArena();
+                loadArena();
+            }
+        }
     }
 
     private Arena getNextArena() {
