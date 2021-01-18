@@ -8,6 +8,7 @@ import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -86,12 +87,21 @@ public class CreateArenaGui {
             plugin.getArenaManager().addArena(arena);
             player.closeInventory();
             MessageUtils.sendMessage(player, "&6Successful create arena: &e" + arenaName);
+            createArenaGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
         });
         createArenaGui.setButton(0, renameButton);
         createArenaGui.setButton(1, loc1Button);
         createArenaGui.setButton(2, loc2Button);
         createArenaGui.setButton(3, worldButton);
         createArenaGui.setButton(8, acceptButton);
+        createArenaGui.setOnClose(zMenu -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.openInventory(zMenu.getInventory());
+            });
+        });
         return createArenaGui.getInventory();
     }
 }

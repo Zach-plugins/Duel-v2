@@ -30,6 +30,10 @@ public class BetGui {
                 .lore(
                         "&7Click to add &e1000$"
                 ).build()).withListener(inventoryClickEvent -> {
+            betGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if(EconomyManager.getBalance(player) >= playerBet + 1000)
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 1000, bet));
@@ -44,6 +48,10 @@ public class BetGui {
                         "&7Click to add &e10000$"
                 ).build()).withListener(inventoryClickEvent -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
+                betGui.setOnClose(zMenu -> {});
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    inventoryClickEvent.getWhoClicked().closeInventory();
+                });
                 if(EconomyManager.getBalance(player) >= playerBet + 10000)
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 10000, bet));
                 else
@@ -56,6 +64,10 @@ public class BetGui {
                 .lore(
                         "&7Click to add &e100000$"
                 ).build()).withListener(inventoryClickEvent -> {
+            betGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if(EconomyManager.getBalance(player) >= playerBet + 100000)
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 100000, bet));
@@ -69,6 +81,10 @@ public class BetGui {
                 .lore(
                         "&7Click to enter a custom amount"
                 ).build()).withListener(inventoryClickEvent -> {
+            betGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
             ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), "&6Enter a custom money amount. You have 5 seconds. Balance: &e" + EconomyManager.getBalance((Player) inventoryClickEvent.getWhoClicked()) + "&6$", chatConfirmEvent -> {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     if(NumberUtils.tryParseDouble(chatConfirmEvent.getMessage())){
@@ -100,7 +116,10 @@ public class BetGui {
             else if(bet.equalsIgnoreCase("bet2")){
                 plugin.bet2.put(player, playerBet);
             }
-            player.closeInventory();
+            betGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
             player.openInventory(new KitGui(plugin).getKitGui(player, arena));
         });
 
@@ -109,6 +128,11 @@ public class BetGui {
         betGui.setButton(2, hundredkButton);
         betGui.setButton(3, customButton);
         betGui.setButton(8, acceptButton);
+        betGui.setOnClose(zMenu -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.openInventory(zMenu.getInventory());
+            });
+        });
 
         return betGui.getInventory();
     }

@@ -5,6 +5,7 @@ import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -25,6 +26,10 @@ public class ConfirmGui {
                     if(runnableConfirm != null)
                         runnableConfirm.run();
                     player.closeInventory();
+            confirmGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
         });
 
         ZButton denyButton = new ZButton(new ItemBuilder(XMaterial.valueOf("REDSTONE_BLOCK").parseMaterial())
@@ -33,10 +38,19 @@ public class ConfirmGui {
                     if(runnableCancel != null)
                         runnableCancel.run();
                     player.closeInventory();
+            confirmGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
         });
 
         confirmGui.setButton(12, confirmButton);
         confirmGui.setButton(14, denyButton);
+        confirmGui.setOnClose(zMenu -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.openInventory(zMenu.getInventory());
+            });
+        });
         return confirmGui.getInventory();
     }
 }

@@ -6,6 +6,7 @@ import me.zachary.duel.kits.Kit;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.items.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -26,10 +27,19 @@ public class KitGui {
             .name(kit.getKitName()).build()).withListener(inventoryClickEvent -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
                 plugin.getArenaManager().joinArena(player, arena, kit);
+                kitGui.setOnClose(zMenu -> {});
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    inventoryClickEvent.getWhoClicked().closeInventory();
+                });
             });
             kitGui.setButton(slot, kitButton);
             slot++;
         }
+        kitGui.setOnClose(zMenu -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.openInventory(zMenu.getInventory());
+            });
+        });
 
         return kitGui.getInventory();
     }

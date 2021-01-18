@@ -30,7 +30,7 @@ public class PickArenaGui {
             .name("&9" + arena.getArenaName())
             .build()).withListener(inventoryClickEvent -> {
                 requester.closeInventory();
-                requested.openInventory(new ConfirmGui(plugin).getConfirmGui((Player) inventoryClickEvent.getWhoClicked(), "&6Duel request from &e" + requester.getName(), "&aAccept the duel", "&cDeny the duel", "&7Click here to accept.", "&7Click here to deny", () -> {
+                requested.openInventory(new ConfirmGui(plugin).getConfirmGui(requested, "&6Duel request from &e" + requester.getName(), "&aAccept the duel", "&cDeny the duel", "&7Click here to accept.", "&7Click here to deny", () -> {
                     plugin.players.remove(requested);
                     MessageUtils.sendMessage(requester, "&2" + requested.getName() + " accept duel request!");
                     Bukkit.getScheduler().runTask(plugin, () -> {
@@ -44,10 +44,19 @@ public class PickArenaGui {
                     MessageUtils.sendMessage(requester, "&c" + requested.getName() + " deny duel request!");
                     requested.closeInventory();
                 }));
+                pickArenaGui.setOnClose(zMenu -> {});
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    inventoryClickEvent.getWhoClicked().closeInventory();
+                });
             });
             pickArenaGui.setButton(slot, arenaButton);
             slot++;
         }
+        pickArenaGui.setOnClose(zMenu -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                requester.openInventory(zMenu.getInventory());
+            });
+        });
 
         return pickArenaGui.getInventory();
     }
