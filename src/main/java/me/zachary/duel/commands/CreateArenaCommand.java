@@ -2,13 +2,13 @@ package me.zachary.duel.commands;
 
 import me.zachary.duel.Duel;
 import me.zachary.duel.arenas.Arena;
-import me.zachary.duel.gui.CreateArenaGui;
 import me.zachary.duel.utils.LocationUtils;
 import me.zachary.zachcore.commands.SubCommand;
+import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class CreateArenaCommand extends SubCommand {
     private Duel plugin;
@@ -30,7 +30,15 @@ public class CreateArenaCommand extends SubCommand {
             player.sendMessage("/duel createarena X,Y,Z X,Y,Z <ArenaName>");
             return;
         }
-        player.openInventory(new CreateArenaGui(JavaPlugin.getPlugin(Duel.class)).getCreateArenaGui(player, loc1, loc2, strings[2], world));
+        Arena arena = new Arena(strings[2], Material.valueOf("GRASS_BLOCK"), loc1, loc2);
+        plugin.arenaConfig.set("arenas." + strings[2] + ".loc1", LocationUtils.unparseLocToString(loc1));
+        plugin.arenaConfig.set("arenas." + strings[2] + ".loc2", LocationUtils.unparseLocToString(loc2));
+        plugin.arenaConfig.set("arenas." + strings[2] + ".material", "GRASS_BLOCK");
+        plugin.arenaConfig.set("arenas." + strings[2] + ".world", world);
+
+        plugin.saveArenaConfig();
+        plugin.getArenaManager().addArena(arena);
+        MessageUtils.sendMessage(player, "&6Successful create arena: &e" + strings[2]);
     }
 
     @Override
