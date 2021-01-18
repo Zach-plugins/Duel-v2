@@ -37,7 +37,6 @@ public final class Duel extends ZachCorePlugin {
         loadKitConfig();
         getArenaManager().loadArena();
         getKitManager().loadKit();
-        System.out.println(getKitManager().getKits().size());
         getServer().getPluginManager().registerEvents(new ArenaListeners(this), this);
         EconomyManager.load();
 

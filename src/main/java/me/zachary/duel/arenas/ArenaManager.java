@@ -37,6 +37,7 @@ public class ArenaManager {
                 Arena arena = new Arena(string, Material.valueOf(material), LocationUtils.parseStringToLoc(loc1, world), LocationUtils.parseStringToLoc(loc2, world));
                 this.addArena(arena);
             }
+            plugin.getLog().log("Successful load " + arenas.size() + " arenas.");
         }
         catch(Exception ex) {
             System.out.println("You don't have create arena yet!");

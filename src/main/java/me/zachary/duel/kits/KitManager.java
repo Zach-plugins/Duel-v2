@@ -56,6 +56,7 @@ public class KitManager {
             Kit kit = new Kit(string, XMaterial.valueOf(plugin.getConfigurationSectionKit().getString(string + ".Icon")).parseMaterial(), inventory, helmet, chestplate, leggings, boots);
             this.addKit(kit);
         }
+        plugin.getLog().log("Successful load " + kits.size() + " kits.");
     }
 
     public void addKit(Kit kit){
