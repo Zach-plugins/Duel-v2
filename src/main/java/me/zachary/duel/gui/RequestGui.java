@@ -4,6 +4,7 @@ import me.zachary.duel.Duel;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.guis.pagination.ZPaginationButtonBuilder;
+import me.zachary.zachcore.utils.ChatPromptUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.SkullUtils;
 import me.zachary.zachcore.utils.xseries.XMaterial;
@@ -20,7 +21,7 @@ public class RequestGui {
         this.plugin = plugin;
     }
 
-    public Inventory getRequestGUI(Player player){
+    public Inventory getRequestGUI(Player player, String searchName){
         ZMenu requestGui = Duel.getGUI().create("&6&lRequest duel", 5);
         requestGui.setPaginationButtonBuilder(getPaginationButtonBuilder());
         setGlass(requestGui, 0);
@@ -30,7 +31,11 @@ public class RequestGui {
         int slot = 10;
         int page = 0;
         for (Player p : players) {
-            if(p == player) continue;
+            if(p == player
+                    || plugin.players.containsKey(p)
+                    || plugin.getArenaManager().getArenaByPlayer(p) != null) continue;
+            if(searchName != null)
+                if(!p.getName().toLowerCase().startsWith(searchName.toLowerCase())) continue;
             ItemBuilder skullItem = new ItemBuilder(SkullUtils.getSkull(p.getUniqueId()))
                     .name("&e" + p.getName())
                     .lore(
@@ -40,7 +45,7 @@ public class RequestGui {
             ZButton skull = new ZButton(skullItem.build()).withListener(inventoryClickEvent -> {
                 plugin.players.put(p, player);
                 player.closeInventory();
-                p.openInventory(new AcceptGui(plugin).getAcceptGui(p, player));
+                player.openInventory(new PickArenaGui(plugin).getPickArenaGui(p, player));
             });
 
             requestGui.setButton(page, slot, skull);
@@ -108,7 +113,13 @@ public class RequestGui {
                                     "&aClick to search a",
                                     "&aspecific player name."
                             ).build()
-                    );
+                    ).withListener(inventoryClickEvent -> {
+                        ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), "&6Enter the name of player you want search.", chatConfirmEvent -> {
+                            Bukkit.getScheduler().runTask(plugin, () -> {
+                                inventoryClickEvent.getWhoClicked().openInventory(getRequestGUI((Player) inventoryClickEvent.getWhoClicked(), chatConfirmEvent.getMessage()));
+                            });
+                        });
+                    });
                 case CUSTOM_1:
                 case CUSTOM_3:
                 case CUSTOM_4:

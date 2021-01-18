@@ -38,13 +38,27 @@ public class ArenaManager {
     }
 
     public void joinArena(Player firstPlayer, Player secondPlayer){
-        Arena nextArena = getNextArena();
-        if(nextArena != null){
-            nextArena.getPlayers().add(firstPlayer);
-            nextArena.getPlayers().add(secondPlayer);
-            firstPlayer.teleport(nextArena.getFirstLoc());
-            secondPlayer.teleport(nextArena.getSecondLoc());
-            nextArena.setStarted();
+        this.joinArena(firstPlayer, secondPlayer, null);
+    }
+
+    public void joinArena(Player player, Arena arena){
+        if(arena != null){
+            arena.getPlayers().add(player);
+            if(arena.getPlayers().size() == 2){
+                arena.getPlayers().get(0).teleport(arena.getFirstLoc());
+                arena.getPlayers().get(1).teleport(arena.getSecondLoc());
+                arena.setStarted();
+            }
+        }
+    }
+
+    public void joinArena(Player firstPlayer, Player secondPlayer, Arena arena){
+        if(arena != null){
+            arena.getPlayers().add(firstPlayer);
+            arena.getPlayers().add(secondPlayer);
+            firstPlayer.teleport(arena.getFirstLoc());
+            secondPlayer.teleport(arena.getSecondLoc());
+            arena.setStarted();
         }
     }
 

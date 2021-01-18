@@ -135,9 +135,9 @@ public class EditArenaGui {
                         "&7Click here to",
                         "&7delete arena."
                 ).build()).withListener(inventoryClickEvent -> {
-            inventoryClickEvent.getWhoClicked().openInventory(new ConfirmGui(plugin).getConfirmGui((Player) inventoryClickEvent.getWhoClicked(), "&6Confirmation", "&cThis will permanently delete &c&lTest&c.", "&7Click here to cancel arena deletion.", () -> {
+            inventoryClickEvent.getWhoClicked().openInventory(new ConfirmGui(plugin).getConfirmGui((Player) inventoryClickEvent.getWhoClicked(), "&6Confirmation", "&aConfirm", "&cCancel", "&cThis will permanently delete &c&lTest&c.", "&7Click here to cancel arena deletion.", () -> {
                 plugin.getArenaManager().deleteArena(arena);
-            }));
+            }, null));
         });
 
         advancedEditArena.setButton(0, renameButton);

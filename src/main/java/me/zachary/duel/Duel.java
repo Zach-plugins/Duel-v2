@@ -5,6 +5,7 @@ import me.zachary.duel.arenas.ArenaManager;
 import me.zachary.duel.commands.CommandManager;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
+import me.zachary.zachcore.utils.hooks.EconomyManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,6 +20,8 @@ public final class Duel extends ZachCorePlugin {
     // Ideally Player who need accept duel :: Player who request the duel please.
     // Basically, requested :: requester
     public Map<Player, Player> players = new HashMap<>();
+    public Map<Player, Double> bet1 = new HashMap<>();
+    public Map<Player, Double> bet2 = new HashMap<>();
     public ArenaManager arenaManager = new ArenaManager(this);
     private File arenaFile;
     public YamlConfiguration arenaConfig;
@@ -29,6 +32,7 @@ public final class Duel extends ZachCorePlugin {
         loadArenaConfig();
         getArenaManager().loadArena();
         getServer().getPluginManager().registerEvents(new ArenaListeners(this), this);
+        EconomyManager.load();
 
         new CommandManager(this);
 

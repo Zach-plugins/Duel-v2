@@ -6,10 +6,7 @@ import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConfirmGui {
     private Duel plugin;
@@ -18,20 +15,23 @@ public class ConfirmGui {
         this.plugin = plugin;
     }
 
-    public Inventory getConfirmGui(Player player, String guiName, String confirmButtonLore, String denyButtonLore, Runnable runnable) {
+    public Inventory getConfirmGui(Player player, String guiName, String confirmButtonName, String cancelButtonName, String confirmButtonLore, String denyButtonLore, Runnable runnableConfirm, Runnable runnableCancel) {
         ZMenu confirmGui = Duel.getGUI().create(guiName, 3);
         confirmGui.setAutomaticPaginationEnabled(false);
 
         ZButton confirmButton = new ZButton(new ItemBuilder(XMaterial.valueOf("EMERALD_BLOCK").parseMaterial())
-                .name("&aConfirm")
+                .name(confirmButtonName)
                 .lore(confirmButtonLore).build()).withListener(inventoryClickEvent -> {
-                    runnable.run();
+                    if(runnableConfirm != null)
+                        runnableConfirm.run();
                     player.closeInventory();
         });
 
         ZButton denyButton = new ZButton(new ItemBuilder(XMaterial.valueOf("REDSTONE_BLOCK").parseMaterial())
-                .name("&cCancel")
+                .name(cancelButtonName)
                 .lore(denyButtonLore).build()).withListener(inventoryClickEvent -> {
+                    if(runnableCancel != null)
+                        runnableCancel.run();
                     player.closeInventory();
         });
 

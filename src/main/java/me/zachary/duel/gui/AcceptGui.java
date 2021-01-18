@@ -20,10 +20,9 @@ public class AcceptGui {
         ZMenu acceptGui = Duel.getGUI().create("&a&lAccept &7or &c&ldeny &7the duel from " + requester.getName() + "!", 3);
         acceptGui.setAutomaticPaginationEnabled(false);
         ZButton acceptButton = new ZButton(new ItemBuilder(XMaterial.valueOf("EMERALD_BLOCK").parseMaterial())
-                .name("&aAccept the duel!")
+                .name("&aAccept the duel")
                 .lore(
-                        "&7Click here to accept",
-                        "&7from " + requester.getName()
+                        "&7Click here to accept"
                 ).build()).withListener(inventoryClickEvent -> {
             plugin.players.remove(requested);
             MessageUtils.sendMessage(requester, "&2" + requested.getName() + " accept duel request!");
@@ -32,10 +31,9 @@ public class AcceptGui {
         });
 
         ZButton denyButton = new ZButton(new ItemBuilder(XMaterial.valueOf("REDSTONE_BLOCK").parseMaterial())
-                .name("&cDeny the duel!")
+                .name("&cDeny the duel")
                 .lore(
-                        "&7Click here to deny",
-                        "&7from " + requester.getName()
+                        "&7Click here to deny"
                 ).build()).withListener(inventoryClickEvent -> {
             plugin.players.remove(requested);
             MessageUtils.sendMessage(requester, "&c" + requested.getName() + " deny duel request!");

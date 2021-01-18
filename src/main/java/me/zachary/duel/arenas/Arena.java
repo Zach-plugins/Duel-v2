@@ -1,9 +1,11 @@
 package me.zachary.duel.arenas;
 
 import me.zachary.duel.Duel;
+import me.zachary.zachcore.utils.hooks.EconomyManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +20,8 @@ public class Arena {
     private boolean isStarted;
     private Duel plugin;
 
-    public Arena(Duel plugin) {
-        this.plugin = plugin;
-    }
-
     public Arena(String arenaName, Material material, Location loc1, Location loc2) {
+        this.plugin = JavaPlugin.getPlugin(Duel.class);
         this.loc1 = loc1;
         this.loc2 = loc2;
         this.arenaName = arenaName;
@@ -60,13 +59,26 @@ public class Arena {
 
     public void eliminate(Player victim) {
         players.remove(victim);
-        checkWin();
+        checkWin(victim);
     }
 
-    private void checkWin() {
+    private void checkWin(Player victim) {
 
         if (players.size() == 1) {
             Player winner = players.get(0);
+            double money = 0;
+            if(plugin.bet1.containsKey(winner)){
+                money += plugin.bet1.get(winner);
+                plugin.bet1.remove(winner);
+                money += plugin.bet2.get(victim);
+                plugin.bet2.remove(victim);
+            }else{
+                money += plugin.bet1.get(victim);
+                plugin.bet1.remove(victim);
+                money += plugin.bet2.get(winner);
+                plugin.bet2.remove(winner);
+            }
+            EconomyManager.deposit(winner, money);
             restart();
         }
 
