@@ -1,0 +1,23 @@
+kits:
+  default:
+    Icon: DIAMOND_SWORD
+    Helmet:
+      name: DIAMOND_HELMET
+      enchantment:
+        name: PROTECTION
+        level: 1
+    Chestplate:
+      name: DIAMOND_CHESTPLATE
+    Leggings:
+      name: DIAMOND_LEGGINGS
+    Boots:
+      name: DIAMOND_BOOTS
+    Content:
+      1:
+        name: DIAMOND_SWORD
+        enchantment:
+          name: SHARPNESS
+          level: 1
+      2:
+        name: GOLDEN_APPLE
+        amount: 3

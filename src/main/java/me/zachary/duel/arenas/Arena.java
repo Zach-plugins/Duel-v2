@@ -1,6 +1,7 @@
 package me.zachary.duel.arenas;
 
 import me.zachary.duel.Duel;
+import me.zachary.duel.kits.Kit;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,12 +9,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Arena {
     private Location loc1;
     private Location loc2;
     private List<Player> players;
+    private Map<Player, Kit> playerKit;
     private String arenaName;
     private String worldName;
     private Material material;
@@ -39,6 +43,10 @@ public class Arena {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public Map<Player, Kit> getPlayersKit(){
+        return playerKit;
     }
 
     public String getArenaName(){
@@ -86,6 +94,7 @@ public class Arena {
 
     private void restart() {
         this.players = new ArrayList<>();
+        this.playerKit = new HashMap<>();
         this.isStarted = false;
     }
 

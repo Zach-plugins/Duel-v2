@@ -3,6 +3,7 @@ package me.zachary.duel;
 import me.zachary.duel.arenas.ArenaListeners;
 import me.zachary.duel.arenas.ArenaManager;
 import me.zachary.duel.commands.CommandManager;
+import me.zachary.duel.kits.KitManager;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
@@ -23,14 +24,20 @@ public final class Duel extends ZachCorePlugin {
     public Map<Player, Double> bet1 = new HashMap<>();
     public Map<Player, Double> bet2 = new HashMap<>();
     public ArenaManager arenaManager = new ArenaManager(this);
+    public KitManager kitManager = new KitManager(this);
     private File arenaFile;
+    private File kitFile;
     public YamlConfiguration arenaConfig;
+    public YamlConfiguration kitConfig;
 
     @Override
     public void onEnable() {
         zachGUI = new ZachGUI(this);
         loadArenaConfig();
+        loadKitConfig();
         getArenaManager().loadArena();
+        getKitManager().loadKit();
+        System.out.println(getKitManager().getKits().size());
         getServer().getPluginManager().registerEvents(new ArenaListeners(this), this);
         EconomyManager.load();
 
@@ -62,9 +69,28 @@ public final class Duel extends ZachCorePlugin {
         arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
     }
 
+    public void loadKitConfig() {
+        kitFile = new File(getDataFolder() + File.separator + "kits.yml");
+
+        if (!kitFile.exists()) {
+            saveResource("kits.yml", false);
+            kitFile = new File(getDataFolder() + File.separator + "kits.yml");
+        }
+
+        kitConfig = YamlConfiguration.loadConfiguration(kitFile);
+    }
+
     public void saveArenaConfig() {
         try {
             arenaConfig.save(arenaFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveKitconfig() {
+        try {
+            kitConfig.save(kitFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +104,15 @@ public final class Duel extends ZachCorePlugin {
         return arenaManager;
     }
 
-    public ConfigurationSection getConfigurationSection(){
+    public KitManager getKitManager() {
+        return kitManager;
+    }
+
+    public ConfigurationSection getConfigurationSectionArena(){
         return arenaConfig.getConfigurationSection("arenas");
+    }
+
+    public ConfigurationSection getConfigurationSectionKit(){
+        return kitConfig.getConfigurationSection("kits");
     }
 }

@@ -101,7 +101,7 @@ public class BetGui {
                 plugin.bet2.put(player, playerBet);
             }
             player.closeInventory();
-            plugin.getArenaManager().joinArena(player, arena);
+            player.openInventory(new KitGui(plugin).getKitGui(player, arena));
         });
 
         betGui.setButton(0, onekButton);

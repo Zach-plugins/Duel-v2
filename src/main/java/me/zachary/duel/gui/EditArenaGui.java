@@ -56,14 +56,14 @@ public class EditArenaGui {
                 ).build()).withListener(inventoryClickEvent -> {
             ChatPromptUtils.showPrompt(plugin, player, "&6Enter new name of arena.", chatConfirmEvent -> {
                 String[] info = new String[4];
-                info[0] = plugin.getConfigurationSection().getString(arena.getArenaName() + ".loc1");
-                info[1] = plugin.getConfigurationSection().getString(arena.getArenaName() + ".loc2");
-                info[2] = plugin.getConfigurationSection().getString(arena.getArenaName() + ".material");
-                info[3] = plugin.getConfigurationSection().getString(arena.getArenaName() + ".world");
-                plugin.getConfigurationSection().set(chatConfirmEvent.getMessage() + ".loc1", info[0]);
-                plugin.getConfigurationSection().set(chatConfirmEvent.getMessage() + ".loc2", info[1]);
-                plugin.getConfigurationSection().set(chatConfirmEvent.getMessage() + ".material", info[2]);
-                plugin.getConfigurationSection().set(chatConfirmEvent.getMessage() + ".world", info[3]);
+                info[0] = plugin.getConfigurationSectionArena().getString(arena.getArenaName() + ".loc1");
+                info[1] = plugin.getConfigurationSectionArena().getString(arena.getArenaName() + ".loc2");
+                info[2] = plugin.getConfigurationSectionArena().getString(arena.getArenaName() + ".material");
+                info[3] = plugin.getConfigurationSectionArena().getString(arena.getArenaName() + ".world");
+                plugin.getConfigurationSectionArena().set(chatConfirmEvent.getMessage() + ".loc1", info[0]);
+                plugin.getConfigurationSectionArena().set(chatConfirmEvent.getMessage() + ".loc2", info[1]);
+                plugin.getConfigurationSectionArena().set(chatConfirmEvent.getMessage() + ".material", info[2]);
+                plugin.getConfigurationSectionArena().set(chatConfirmEvent.getMessage() + ".world", info[3]);
                 plugin.saveArenaConfig();
                 plugin.getArenaManager().deleteArena(arena);
             });
@@ -76,7 +76,7 @@ public class EditArenaGui {
                         "&8Current name: &7" + LocationUtils.unparseLocToString(arena.getFirstLoc())
                 ).build()).withListener(inventoryClickEvent -> {
             ChatPromptUtils.showPrompt(plugin, player, "&6Enter new location 1. Please use this format: &lX,Y,Z", chatConfirmEvent -> {
-                plugin.getConfigurationSection().set(arena.getArenaName() + ".loc1", chatConfirmEvent.getMessage());
+                plugin.getConfigurationSectionArena().set(arena.getArenaName() + ".loc1", chatConfirmEvent.getMessage());
                 plugin.saveArenaConfig();
                 plugin.getArenaManager().reloadArena();
             });
@@ -89,7 +89,7 @@ public class EditArenaGui {
                         "&8Current name: &7" + LocationUtils.unparseLocToString(arena.getSecondLoc())
                 ).build()).withListener(inventoryClickEvent -> {
             ChatPromptUtils.showPrompt(plugin, player, "&6Enter new location 2. Please use this format: &lX,Y,Z", chatConfirmEvent -> {
-                plugin.getConfigurationSection().set(arena.getArenaName() + ".loc2", chatConfirmEvent.getMessage());
+                plugin.getConfigurationSectionArena().set(arena.getArenaName() + ".loc2", chatConfirmEvent.getMessage());
                 plugin.saveArenaConfig();
                 plugin.getArenaManager().reloadArena();
             });
@@ -111,7 +111,7 @@ public class EditArenaGui {
                 index--;
             }
             ChatPromptUtils.showPrompt(plugin, player, "&6Enter new world name. World available: \n" + worldAvailable + "&6.", chatConfirmEvent -> {
-                plugin.getConfigurationSection().set(arena.getArenaName() + ".world", chatConfirmEvent.getMessage());
+                plugin.getConfigurationSectionArena().set(arena.getArenaName() + ".world", chatConfirmEvent.getMessage());
                 plugin.saveArenaConfig();
                 plugin.getArenaManager().reloadArena();
             });
@@ -124,7 +124,7 @@ public class EditArenaGui {
                         "&8Current material: &7" + arena.getMaterial().name()
                 ).build()).withListener(inventoryClickEvent -> {
             ChatPromptUtils.showPrompt(plugin, player, "&6Enter new material name.", chatConfirmEvent -> {
-                plugin.getConfigurationSection().set(arena.getArenaName() + ".material", chatConfirmEvent.getMessage().toUpperCase());
+                plugin.getConfigurationSectionArena().set(arena.getArenaName() + ".material", chatConfirmEvent.getMessage().toUpperCase());
                 plugin.saveArenaConfig();
                 plugin.getArenaManager().reloadArena();
             });
