@@ -37,8 +37,10 @@ public class BetGui {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if(EconomyManager.getBalance(player) >= playerBet + 1000)
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 1000, bet));
-                else
+                else{
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
                     MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                }
             });
         });
 
@@ -54,8 +56,10 @@ public class BetGui {
                 });
                 if(EconomyManager.getBalance(player) >= playerBet + 10000)
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 10000, bet));
-                else
+                else{
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
                     MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                }
             });
         });
 
@@ -71,8 +75,10 @@ public class BetGui {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if(EconomyManager.getBalance(player) >= playerBet + 100000)
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 100000, bet));
-                else
+                else{
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
                     MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                }
             });
         });
 
@@ -85,13 +91,15 @@ public class BetGui {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
             });
-            ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), "&6Enter a custom money amount. You have 5 seconds. Balance: &e" + EconomyManager.getBalance((Player) inventoryClickEvent.getWhoClicked()) + "&6$", chatConfirmEvent -> {
+            ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), "&6Enter a custom money amount. You have 5 seconds. Balance: &e" + (EconomyManager.getBalance((Player) inventoryClickEvent.getWhoClicked()) - playerBet) + "&6$", chatConfirmEvent -> {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     if(NumberUtils.tryParseDouble(chatConfirmEvent.getMessage())){
                         if(EconomyManager.getBalance(player) >= playerBet + Double.parseDouble(chatConfirmEvent.getMessage()))
                             inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + Double.parseDouble(chatConfirmEvent.getMessage()), bet));
-                        else
+                        else{
+                            inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
                             MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                        }
                     }else{
                         inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
                     }
