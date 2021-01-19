@@ -59,6 +59,11 @@ public class KitManager {
         plugin.getLog().log("Successful load " + kits.size() + " kits.");
     }
 
+    public void reloadKit(){
+        clearKit();
+        loadKit();
+    }
+
     public void addKit(Kit kit){
         this.kits.add(kit);
     }
