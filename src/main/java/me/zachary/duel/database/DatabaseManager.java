@@ -1,4 +1,4 @@
-package me.zachary.duel.Database;
+package me.zachary.duel.database;
 
 import lib.PatPeter.SQLibrary.Database;
 import lib.PatPeter.SQLibrary.MySQL;

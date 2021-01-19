@@ -1,6 +1,6 @@
 package me.zachary.duel;
 
-import me.zachary.duel.Database.DatabaseManager;
+import me.zachary.duel.database.DatabaseManager;
 import me.zachary.duel.arenas.ArenaListeners;
 import me.zachary.duel.arenas.ArenaManager;
 import me.zachary.duel.commands.CommandManager;
