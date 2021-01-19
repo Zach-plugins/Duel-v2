@@ -25,7 +25,7 @@ public class PickArenaGui {
 
         int slot = 0;
         for(Arena arena : plugin.getArenaManager().getArenas()){
-            if(arena.isStarted()) continue;
+            if(arena.isStarted() || !requester.hasPermission("duel.arena." + arena.getArenaName())) continue;
             ZButton arenaButton = new ZButton(new ItemBuilder(XMaterial.valueOf(arena.getMaterial().name()).parseMaterial())
             .name("&9" + arena.getArenaName())
             .build()).withListener(inventoryClickEvent -> {
@@ -52,6 +52,15 @@ public class PickArenaGui {
             pickArenaGui.setButton(slot, arenaButton);
             slot++;
         }
+        ZButton cancelButton = new ZButton(new ItemBuilder(XMaterial.valueOf("REDSTONE_BLOCK").parseMaterial())
+                .name("&cClick to cancel").build()).withListener(inventoryClickEvent -> {
+            pickArenaGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+                plugin.players.remove(requested);
+            });
+        });
+        pickArenaGui.setButton(53, cancelButton);
         pickArenaGui.setOnClose(zMenu -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 requester.openInventory(zMenu.getInventory());
