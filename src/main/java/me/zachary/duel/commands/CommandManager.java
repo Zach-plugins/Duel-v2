@@ -29,7 +29,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 new HelpCommand(),
                 new CreateArenaCommand(plugin),
                 new EditArenaCommand(plugin),
-                new RequestCommand(plugin)
+                new RequestCommand(plugin),
+                new ReloadCommand(plugin)
         );
     }
 
