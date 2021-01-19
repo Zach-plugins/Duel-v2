@@ -1,0 +1,8 @@
+MySQL:
+  # Set to 'true' to use MySQL instead of SQLite for data storage.
+  Enabled: false
+  Hostname: localhost
+  Port: 3306
+  Database: your-database
+  Username: user
+  Password: pass

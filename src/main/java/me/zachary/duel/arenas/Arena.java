@@ -1,5 +1,6 @@
 package me.zachary.duel.arenas;
 
+import me.zachary.duel.Database.DatabaseManager;
 import me.zachary.duel.Duel;
 import me.zachary.duel.kits.Kit;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
@@ -86,6 +87,8 @@ public class Arena {
                 money += plugin.bet2.get(winner);
                 plugin.bet2.remove(winner);
             }
+            plugin.getDatabaseManager().setWin(winner, 1);
+            plugin.getDatabaseManager().setLose(victim, 1);
             EconomyManager.deposit(winner, money);
             restart();
         }

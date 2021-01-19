@@ -1,9 +1,11 @@
 package me.zachary.duel;
 
+import me.zachary.duel.Database.DatabaseManager;
 import me.zachary.duel.arenas.ArenaListeners;
 import me.zachary.duel.arenas.ArenaManager;
 import me.zachary.duel.commands.CommandManager;
 import me.zachary.duel.kits.KitManager;
+import me.zachary.duel.listeners.JoinListener;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
@@ -25,6 +27,7 @@ public final class Duel extends ZachCorePlugin {
     public Map<Player, Double> bet2 = new HashMap<>();
     public ArenaManager arenaManager = new ArenaManager(this);
     public KitManager kitManager = new KitManager(this);
+    public DatabaseManager databaseManager = new DatabaseManager(this);
     private File arenaFile;
     private File kitFile;
     public YamlConfiguration arenaConfig;
@@ -41,6 +44,8 @@ public final class Duel extends ZachCorePlugin {
         EconomyManager.load();
 
         new CommandManager(this);
+        new JoinListener(this);
+        getDatabaseManager().loadDatabase();
 
         preEnable();
     }
@@ -105,6 +110,10 @@ public final class Duel extends ZachCorePlugin {
 
     public KitManager getKitManager() {
         return kitManager;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
     public ConfigurationSection getConfigurationSectionArena(){

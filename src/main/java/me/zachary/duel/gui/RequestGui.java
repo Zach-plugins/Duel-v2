@@ -39,8 +39,8 @@ public class RequestGui {
             ItemBuilder skullItem = new ItemBuilder(SkullUtils.getSkull(p.getUniqueId()))
                     .name("&e" + p.getName())
                     .lore(
-                            "&2Wins: 0",
-                            "&cLoses: 0"
+                            "&2Wins: " + plugin.getDatabaseManager().getPlayerWin().get(player),
+                            "&cLoses: " + plugin.getDatabaseManager().getPlayerLose().get(player)
                     );
             ZButton skull = new ZButton(skullItem.build()).withListener(inventoryClickEvent -> {
                 plugin.players.put(p, player);
