@@ -23,7 +23,7 @@ public class RequestGui {
 
     public Inventory getRequestGUI(Player player, String searchName){
         ZMenu requestGui = Duel.getGUI().create("&6&lRequest duel", 5);
-        requestGui.setPaginationButtonBuilder(getPaginationButtonBuilder());
+        requestGui.setPaginationButtonBuilder(getPaginationButtonBuilder(player));
         setGlass(requestGui, 0);
 
         Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
@@ -39,8 +39,8 @@ public class RequestGui {
             ItemBuilder skullItem = new ItemBuilder(SkullUtils.getSkull(p.getUniqueId()))
                     .name("&e" + p.getName())
                     .lore(
-                            "&2Wins: " + plugin.getDatabaseManager().getPlayerWin().get(player),
-                            "&cLoses: " + plugin.getDatabaseManager().getPlayerLose().get(player)
+                            "&2Wins: " + plugin.getDatabaseManager().getPlayerWin().get(p),
+                            "&cLoses: " + plugin.getDatabaseManager().getPlayerLose().get(p)
                     );
             ZButton skull = new ZButton(skullItem.build()).withListener(inventoryClickEvent -> {
                 plugin.players.put(p, player);
@@ -60,7 +60,7 @@ public class RequestGui {
         return requestGui.getInventory();
     }
 
-    public ZPaginationButtonBuilder getPaginationButtonBuilder(){
+    public ZPaginationButtonBuilder getPaginationButtonBuilder(Player player){
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:
@@ -121,6 +121,12 @@ public class RequestGui {
                         });
                     });
                 case CUSTOM_1:
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf("OAK_SIGN").parseMaterial())
+                    .name("&6Your stats")
+                    .lore(
+                            "&2Wins: " + plugin.getDatabaseManager().getPlayerWin().get(player),
+                            "&cLoses: " + plugin.getDatabaseManager().getPlayerLose().get(player)
+                    ).build());
                 case CUSTOM_3:
                 case CUSTOM_4:
                 case UNASSIGNED:
