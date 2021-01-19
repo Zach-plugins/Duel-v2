@@ -131,11 +131,11 @@ public class ArenaManager {
         setStuff(secondPlayer, arena.getPlayersKit().get(secondPlayer));
     }
 
-    public static void saveLocations(Player player) {
+    public void saveLocations(Player player) {
         locations.put(player.getUniqueId(), player.getLocation());
     }
 
-    public static void restoreLocations(Player player) {
+    public void restoreLocations(Player player) {
         Location loc = locations.get(player.getUniqueId());
         player.teleport(loc);
     }
