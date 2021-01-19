@@ -29,6 +29,7 @@ public final class Duel extends ZachCorePlugin {
     public ArenaManager arenaManager = new ArenaManager(this);
     public KitManager kitManager = new KitManager(this);
     public DatabaseManager databaseManager = new DatabaseManager(this);
+    public MessageManager messageManager = new MessageManager(this);
     private File arenaFile;
     private File kitFile;
     public YamlConfiguration arenaConfig;
@@ -46,6 +47,7 @@ public final class Duel extends ZachCorePlugin {
         new CommandManager(this);
         new JoinListener(this);
         getDatabaseManager().loadDatabase();
+        getMessageManager().load();
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
             new Placeholder(this).register();
 
@@ -116,6 +118,10 @@ public final class Duel extends ZachCorePlugin {
 
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
+    }
+
+    public MessageManager getMessageManager(){
+        return messageManager;
     }
 
     public ConfigurationSection getConfigurationSectionArena(){

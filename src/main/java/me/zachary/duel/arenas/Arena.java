@@ -3,6 +3,7 @@ package me.zachary.duel.arenas;
 import me.zachary.duel.Database.DatabaseManager;
 import me.zachary.duel.Duel;
 import me.zachary.duel.kits.Kit;
+import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -87,6 +88,8 @@ public class Arena {
                 money += plugin.bet2.get(winner);
                 plugin.bet2.remove(winner);
             }
+            MessageUtils.sendMessage(winner, plugin.getMessageManager().getString("Duel win"));
+            MessageUtils.sendMessage(victim, plugin.getMessageManager().getString("Duel lose"));
             plugin.getDatabaseManager().setWin(winner, 1);
             plugin.getDatabaseManager().setLose(victim, 1);
             EconomyManager.deposit(winner, money);

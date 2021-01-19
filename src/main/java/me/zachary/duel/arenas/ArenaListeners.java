@@ -1,6 +1,7 @@
 package me.zachary.duel.arenas;
 
 import me.zachary.duel.Duel;
+import me.zachary.zachcore.utils.ChatUtils;
 import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class ArenaListeners implements Listener {
             }
             event.getDrops().clear();
             event.setKeepLevel(true);
-            //Bukkit.broadcastMessage(Utils.chat(Translation.Broadcast_Duel_Win.toString().replace("<winner>", killer.getName()).replace("<loser>", victim.getName())));Arena arena = main.getArenaManager().getArenaByPlayer(killer);
+            Bukkit.broadcastMessage(ChatUtils.color(plugin.getMessageManager().getString("Duel broadcast win").replace("{winner}", killer.getName()).replace("{loser}", victim.getName())));
 
             Player finalKiller = killer;
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -87,7 +88,7 @@ public class ArenaListeners implements Listener {
             plugin.getArenaManager().restoreLocations(otherPlayer);
             plugin.getArenaManager().restoreInventory(leaver);
             plugin.getArenaManager().restoreInventory(otherPlayer);
-            MessageUtils.sendMessage(otherPlayer, "&e" + leaver.getName() + " &6leave the server. So, you win the duel.");
+            MessageUtils.sendMessage(otherPlayer, plugin.getMessageManager().getString("Duel leave").replace("{leaver}", leaver.getName()));
             arena.eliminate(leaver);
         }
 

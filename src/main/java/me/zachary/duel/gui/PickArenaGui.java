@@ -5,7 +5,6 @@ import me.zachary.duel.arenas.Arena;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.MessageUtils;
-import me.zachary.zachcore.utils.hooks.EconomyManager;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
@@ -20,7 +19,7 @@ public class PickArenaGui {
     }
 
     public Inventory getPickArenaGui(Player requested, Player requester){
-        ZMenu pickArenaGui = Duel.getGUI().create("&6Choice an arena for duel.", 6);
+        ZMenu pickArenaGui = Duel.getGUI().create(plugin.getMessageManager().getString("Gui.PickArena.Name"), 6);
         pickArenaGui.setAutomaticPaginationEnabled(false);
 
         int slot = 0;
@@ -30,9 +29,14 @@ public class PickArenaGui {
             .name("&9" + arena.getArenaName())
             .build()).withListener(inventoryClickEvent -> {
                 requester.closeInventory();
-                requested.openInventory(new ConfirmGui(plugin).getConfirmGui(requested, "&6Duel request from &e" + requester.getName(), "&aAccept the duel", "&cDeny the duel", "&7Click here to accept.", "&7Click here to deny", () -> {
+                requested.openInventory(new ConfirmGui(plugin).getConfirmGui(requested,
+                        plugin.getMessageManager().getString("Gui.Confirm duel.Name").replace("{player}", requester.getName()),
+                        plugin.getMessageManager().getString("Gui.Confirm duel.Confirm.Name"),
+                        plugin.getMessageManager().getString("Gui.Confirm duel.Cancel.Name"),
+                        plugin.getMessageManager().getString("Gui.Confirm duel.Confirm.Lore"),
+                        plugin.getMessageManager().getString("Gui.Confirm duel.Cancel.Lore"), () -> {
                     plugin.players.remove(requested);
-                    MessageUtils.sendMessage(requester, "&2" + requested.getName() + " accept duel request!");
+                    MessageUtils.sendMessage(requester, plugin.getMessageManager().getString("Duel accept").replace("{player}", requested.getName()));
                     Bukkit.getScheduler().runTask(plugin, () -> {
                         requester.closeInventory();
                         requester.openInventory(new BetGui(plugin).getBetGui(requester, arena,0, "bet2"));
@@ -41,19 +45,20 @@ public class PickArenaGui {
                     });
                 }, () -> {
                     plugin.players.remove(requested);
-                    MessageUtils.sendMessage(requester, "&c" + requested.getName() + " deny duel request!");
+                    MessageUtils.sendMessage(requester, plugin.getMessageManager().getString("Duel deny").replace("{player}", requested.getName()));
                     requested.closeInventory();
                 }));
                 pickArenaGui.setOnClose(zMenu -> {});
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     inventoryClickEvent.getWhoClicked().closeInventory();
+                    MessageUtils.sendMessage(requester, plugin.getMessageManager().getString("Duel request send").replace("{player}", requested.getName()));
                 });
             });
             pickArenaGui.setButton(slot, arenaButton);
             slot++;
         }
-        ZButton cancelButton = new ZButton(new ItemBuilder(XMaterial.valueOf("REDSTONE_BLOCK").parseMaterial())
-                .name("&cClick to cancel").build()).withListener(inventoryClickEvent -> {
+        ZButton cancelButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.PickArena.Cancel.Material")).parseMaterial())
+                .name(plugin.getMessageManager().getString("Gui.PickArena.Cancel.Name")).build()).withListener(inventoryClickEvent -> {
             pickArenaGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();

@@ -3,6 +3,7 @@ package me.zachary.duel.arenas;
 import me.zachary.duel.Duel;
 import me.zachary.duel.kits.Kit;
 import me.zachary.duel.utils.LocationUtils;
+import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -129,6 +130,8 @@ public class ArenaManager {
         storeAndClearInventory(secondPlayer);
         setStuff(firstPlayer, arena.getPlayersKit().get(firstPlayer));
         setStuff(secondPlayer, arena.getPlayersKit().get(secondPlayer));
+        MessageUtils.sendMessage(firstPlayer, plugin.getMessageManager().getString("Duel start"));
+        MessageUtils.sendMessage(secondPlayer, plugin.getMessageManager().getString("Duel start"));
     }
 
     public void saveLocations(Player player) {

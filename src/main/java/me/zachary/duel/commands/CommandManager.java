@@ -53,12 +53,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             subCommand = getSubCommand(commands, args[0]);
 
             if(subCommand == null){
-                MessageUtils.sendMessage(player, "&cUnknown arguments!");
+                MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Unknown arguments"));
                 return true;
             }
 
             if(!player.hasPermission("duel." + subCommand.getName())){
-                MessageUtils.sendMessage(player, "&cYou don't have the permission to execute this command.");
+                MessageUtils.sendMessage(player, plugin.getMessageManager().getString("No permission"));
                 return true;
             }
 

@@ -1,6 +1,7 @@
 package me.zachary.duel.gui;
 
 import me.zachary.duel.Duel;
+import me.zachary.duel.utils.LoreUtils;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.guis.pagination.ZPaginationButtonBuilder;
@@ -22,7 +23,7 @@ public class RequestGui {
     }
 
     public Inventory getRequestGUI(Player player, String searchName){
-        ZMenu requestGui = Duel.getGUI().create("&6&lRequest duel", 5);
+        ZMenu requestGui = Duel.getGUI().create(plugin.getMessageManager().getString("Gui.Request.Name"), 5);
         requestGui.setPaginationButtonBuilder(getPaginationButtonBuilder(player));
         setGlass(requestGui, 0);
 
@@ -38,10 +39,9 @@ public class RequestGui {
                 if(!p.getName().toLowerCase().startsWith(searchName.toLowerCase())) continue;
             ItemBuilder skullItem = new ItemBuilder(SkullUtils.getSkull(p.getUniqueId()))
                     .name("&e" + p.getName())
-                    .lore(
-                            "&2Wins: " + plugin.getDatabaseManager().getPlayerWin().get(p),
-                            "&cLoses: " + plugin.getDatabaseManager().getPlayerLose().get(p)
-                    );
+                    .lore(LoreUtils.getLore("Gui.Request.Lore",
+                            "{win}", String.valueOf(plugin.getDatabaseManager().getPlayerWin().get(p)),
+                            "{lose}", String.valueOf(plugin.getDatabaseManager().getPlayerLose().get(p))));
             ZButton skull = new ZButton(skullItem.build()).withListener(inventoryClickEvent -> {
                 plugin.players.put(p, player);
                 player.closeInventory();
@@ -64,19 +64,17 @@ public class RequestGui {
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf("REDSTONE").parseMaterial())
-                            .name("&c&lClose menu")
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Request.Close.Material")).parseMaterial())
+                            .name(plugin.getMessageManager().getString("Gui.Request.Close.Name"))
                             .build()
                     ).withListener(event -> {
                         event.getWhoClicked().closeInventory();
                     });
 
                 case PREV_BUTTON:
-                    if (inventory.getCurrentPage() > 0) return new ZButton(new ItemBuilder(XMaterial.valueOf("ARROW").parseMaterial())
-                            .name("&a&l\u2190 Previous Page")
-                            .lore(
-                                    "&aClick to move back to",
-                                    "&apage " + inventory.getCurrentPage() + ".")
+                    if (inventory.getCurrentPage() > 0) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Request.Previous.Material")).parseMaterial())
+                            .name(plugin.getMessageManager().getString("Gui.Request.Previous.Name"))
+                            .lore(LoreUtils.getLore("Gui.Request.Previous.Lore", "{page}", String.valueOf(inventory.getCurrentPage())))
                             .build()
                     ).withListener(event -> {
                         event.setCancelled(true);
@@ -85,21 +83,17 @@ public class RequestGui {
                     else return null;
 
                 case CURRENT_BUTTON:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf("NAME_TAG").parseMaterial())
-                            .name("&7&lPage " + (inventory.getCurrentPage() + 1) + " of " + inventory.getMaxPage())
-                            .lore(
-                                    "&7You are currently viewing",
-                                    "&7page " + (inventory.getCurrentPage() + 1) + "."
-                            ).build()
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Request.Current.Material")).parseMaterial())
+                            .name(plugin.getMessageManager().getString("Gui.Request.Current.Name").replace("{currentpage}", String.valueOf(inventory.getCurrentPage() + 1)).replace("{maxpage}", String.valueOf(inventory.getMaxPage())))
+                            .lore(LoreUtils.getLore("Gui.Request.Current.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 1)))
+                            .build()
                     ).withListener(event -> event.setCancelled(true));
 
                 case NEXT_BUTTON:
-                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new ZButton(new ItemBuilder(XMaterial.valueOf("ARROW").parseMaterial())
-                            .name("&a&lNext Page \u2192")
-                            .lore(
-                                    "&aClick to move forward to",
-                                    "&apage " + (inventory.getCurrentPage() + 2) + "."
-                            ).build()
+                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Request.Next.Material")).parseMaterial())
+                            .name(plugin.getMessageManager().getString("Gui.Request.Next.Name"))
+                            .lore(LoreUtils.getLore("Gui.Request.Next.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 2)))
+                            .build()
                     ).withListener(event -> {
                         event.setCancelled(true);
                         inventory.nextPage(event.getWhoClicked());
@@ -107,26 +101,23 @@ public class RequestGui {
                     else return null;
 
                 case CUSTOM_2:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf("COMPASS").parseMaterial())
-                            .name("&6Search a player name.")
-                            .lore(
-                                    "&aClick to search a",
-                                    "&aspecific player name."
-                            ).build()
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Request.Search.Material")).parseMaterial())
+                            .name(plugin.getMessageManager().getString("Gui.Request.Search.Name"))
+                            .lore(plugin.getMessageManager().getStringList("Gui.Request.Search.Lore")).build()
                     ).withListener(inventoryClickEvent -> {
-                        ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), "&6Enter the name of player you want search.", chatConfirmEvent -> {
+                        ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), plugin.getMessageManager().getString("Gui.Request.Search.Question"), chatConfirmEvent -> {
                             Bukkit.getScheduler().runTask(plugin, () -> {
                                 inventoryClickEvent.getWhoClicked().openInventory(getRequestGUI((Player) inventoryClickEvent.getWhoClicked(), chatConfirmEvent.getMessage()));
                             });
                         });
                     });
                 case CUSTOM_1:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf("OAK_SIGN").parseMaterial())
-                    .name("&6Your stats")
-                    .lore(
-                            "&2Wins: " + plugin.getDatabaseManager().getPlayerWin().get(player),
-                            "&cLoses: " + plugin.getDatabaseManager().getPlayerLose().get(player)
-                    ).build());
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Request.Stats.Material")).parseMaterial())
+                    .name(plugin.getMessageManager().getString("Gui.Request.Stats.Name"))
+                    .lore(LoreUtils.getLore("Gui.Request.Stats.Lore",
+                            "{win}", String.valueOf(plugin.getDatabaseManager().getPlayerWin().get(player)),
+                            "{lose}", String.valueOf(plugin.getDatabaseManager().getPlayerLose().get(player))))
+                    .build());
                 case CUSTOM_3:
                 case CUSTOM_4:
                 case UNASSIGNED:

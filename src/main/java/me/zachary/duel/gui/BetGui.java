@@ -2,6 +2,7 @@ package me.zachary.duel.gui;
 
 import me.zachary.duel.Duel;
 import me.zachary.duel.arenas.Arena;
+import me.zachary.duel.utils.LoreUtils;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.ChatPromptUtils;
@@ -22,14 +23,13 @@ public class BetGui {
     }
 
     public Inventory getBetGui(Player player, Arena arena, double playerBet, String bet){
-        ZMenu betGui = Duel.getGUI().create("&6Make your bet", 1);
+        ZMenu betGui = Duel.getGUI().create(plugin.getMessageManager().getString("Gui.Bet.Name"), 1);
         betGui.setAutomaticPaginationEnabled(false);
 
-        ZButton onekButton = new ZButton(new ItemBuilder(XMaterial.valueOf("GOLD_NUGGET").parseMaterial())
-                .name("&6Add 1k")
-                .lore(
-                        "&7Click to add &e1000$"
-                ).build()).withListener(inventoryClickEvent -> {
+        ZButton onekButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Bet.1k.Material")).parseMaterial())
+                .name(plugin.getMessageManager().getString("Gui.Bet.1k.Name"))
+                .lore(plugin.getMessageManager().getString("Gui.Bet.1k.Lore"))
+                .build()).withListener(inventoryClickEvent -> {
             betGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
@@ -39,16 +39,15 @@ public class BetGui {
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 1000, bet));
                 else{
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
-                    MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                    MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                 }
             });
         });
 
-        ZButton tenkButton = new ZButton(new ItemBuilder(XMaterial.valueOf("GOLD_INGOT").parseMaterial())
-                .name("&6Add 10k")
-                .lore(
-                        "&7Click to add &e10000$"
-                ).build()).withListener(inventoryClickEvent -> {
+        ZButton tenkButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Bet.10k.Material")).parseMaterial())
+                .name(plugin.getMessageManager().getString("Gui.Bet.10k.Name"))
+                .lore(plugin.getMessageManager().getString("Gui.Bet.10k.Lore"))
+                .build()).withListener(inventoryClickEvent -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 betGui.setOnClose(zMenu -> {});
                 Bukkit.getScheduler().runTask(plugin, () -> {
@@ -58,16 +57,15 @@ public class BetGui {
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 10000, bet));
                 else{
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
-                    MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                    MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                 }
             });
         });
 
-        ZButton hundredkButton = new ZButton(new ItemBuilder(XMaterial.valueOf("GOLD_NUGGET").parseMaterial())
-                .name("&6Add 100k")
-                .lore(
-                        "&7Click to add &e100000$"
-                ).build()).withListener(inventoryClickEvent -> {
+        ZButton hundredkButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Bet.100k.Material")).parseMaterial())
+                .name(plugin.getMessageManager().getString("Gui.Bet.100k.Name"))
+                .lore(plugin.getMessageManager().getString("Gui.Bet.100k.Lore"))
+                .build()).withListener(inventoryClickEvent -> {
             betGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
@@ -77,28 +75,27 @@ public class BetGui {
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 100000, bet));
                 else{
                     inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
-                    MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                    MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                 }
             });
         });
 
-        ZButton customButton = new ZButton(new ItemBuilder(XMaterial.valueOf("ANVIL").parseMaterial())
-                .name("&6Custom amount")
-                .lore(
-                        "&7Click to enter a custom amount"
-                ).build()).withListener(inventoryClickEvent -> {
+        ZButton customButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Bet.Custom.Material")).parseMaterial())
+                .name(plugin.getMessageManager().getString("Gui.Bet.Custom.Name"))
+                .lore(plugin.getMessageManager().getString("Gui.Bet.Custom.Lore"))
+                .build()).withListener(inventoryClickEvent -> {
             betGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
             });
-            ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), "&6Enter a custom money amount. You have 5 seconds. Balance: &e" + (EconomyManager.getBalance((Player) inventoryClickEvent.getWhoClicked()) - playerBet) + "&6$", chatConfirmEvent -> {
+            ChatPromptUtils.showPrompt(plugin, (Player) inventoryClickEvent.getWhoClicked(), plugin.getMessageManager().getString("Gui.Bet.Custom.Question").replace("{balance}", String.valueOf((EconomyManager.getBalance((Player) inventoryClickEvent.getWhoClicked()) - playerBet))), chatConfirmEvent -> {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     if(NumberUtils.tryParseDouble(chatConfirmEvent.getMessage())){
                         if(EconomyManager.getBalance(player) >= playerBet + Double.parseDouble(chatConfirmEvent.getMessage()))
                             inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + Double.parseDouble(chatConfirmEvent.getMessage()), bet));
                         else{
                             inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
-                            MessageUtils.sendMessage(player, "&cYou don't have enough money to do that.");
+                            MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                         }
                     }else{
                         inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
@@ -111,13 +108,10 @@ public class BetGui {
             });
         });
 
-        ZButton acceptButton = new ZButton(new ItemBuilder(XMaterial.valueOf("PAPER").parseMaterial())
-                .name("&6Accept your bet")
-                .lore(
-                        "&7Your bet: &8" + playerBet + "&7$",
-                        "&7Winner will win all money bet by",
-                        "&7the 2 players."
-                ).build()).withListener(inventoryClickEvent -> {
+        ZButton acceptButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Bet.Accept.Material")).parseMaterial())
+                .name(plugin.getMessageManager().getString("Gui.Bet.Accept.Name"))
+                .lore(LoreUtils.getLore("Gui.Bet.Accept.Lore", "{bet}", String.valueOf(playerBet)))
+                .build()).withListener(inventoryClickEvent -> {
             EconomyManager.withdrawBalance(player, playerBet);
             if(bet.equalsIgnoreCase("bet1"))
                 plugin.bet1.put(player, playerBet);

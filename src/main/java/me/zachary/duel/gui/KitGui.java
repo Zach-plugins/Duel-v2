@@ -18,7 +18,7 @@ public class KitGui {
     }
 
     public Inventory getKitGui(Player player, Arena arena){
-        ZMenu kitGui = Duel.getGUI().create("&6Select a kit", 1);
+        ZMenu kitGui = Duel.getGUI().create(plugin.getMessageManager().getString("Gui.Kit.Name"), 1);
         kitGui.setAutomaticPaginationEnabled(false);
 
         int slot = 0;
