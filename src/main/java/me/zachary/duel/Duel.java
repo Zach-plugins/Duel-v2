@@ -9,6 +9,7 @@ import me.zachary.duel.listeners.JoinListener;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -42,10 +43,11 @@ public final class Duel extends ZachCorePlugin {
         getKitManager().loadKit();
         getServer().getPluginManager().registerEvents(new ArenaListeners(this), this);
         EconomyManager.load();
-
         new CommandManager(this);
         new JoinListener(this);
         getDatabaseManager().loadDatabase();
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+            new Placeholder(this).register();
 
         preEnable();
     }
