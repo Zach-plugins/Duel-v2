@@ -108,6 +108,14 @@ public class MessageManager {
         lore.add("&cLoses: {lose}");
         this.cfg.add("Gui.Request.Stats.Lore", lore.toArray());
         lore.clear();
+        lore.add("&7==========================================");
+        lore.add("&6/duel &7- &eAsk in duel someone.");
+        lore.add("&6/duel createarena <X,Y,Z> <X,Y,Z> <ArenaName> &7- &eCreate an arena.");
+        lore.add("&6/duel editarena &7- &eEdit current arena.");
+        lore.add("&6/duel reload &7- &eReload config.");
+        lore.add("&7==========================================");
+        this.cfg.add("Help", lore.toArray());
+        lore.clear();
     }
 
     public String getString(String path){

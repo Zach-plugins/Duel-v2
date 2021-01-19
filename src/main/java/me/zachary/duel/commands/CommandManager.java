@@ -26,7 +26,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private void registerSubCommands() {
         commands = Arrays.asList(
-                new HelpCommand(),
+                new HelpCommand(plugin),
                 new CreateArenaCommand(plugin),
                 new EditArenaCommand(plugin),
                 new RequestCommand(plugin),
