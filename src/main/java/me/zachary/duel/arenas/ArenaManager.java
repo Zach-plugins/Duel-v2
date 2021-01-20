@@ -130,10 +130,16 @@ public class ArenaManager {
         secondPlayer.setFlying(false);
         firstPlayer.setAllowFlight(false);
         secondPlayer.setAllowFlight(false);
-        storeAndClearInventory(firstPlayer);
-        storeAndClearInventory(secondPlayer);
-        setStuff(firstPlayer, arena.getPlayersKit().get(firstPlayer));
-        setStuff(secondPlayer, arena.getPlayersKit().get(secondPlayer));
+        saveInventory(firstPlayer);
+        saveInventory(secondPlayer);
+        if(arena.getPlayersKit().get(firstPlayer) != null){
+            clearinventory(firstPlayer);
+            setStuff(firstPlayer, arena.getPlayersKit().get(firstPlayer));
+        }
+        if(arena.getPlayersKit().get(secondPlayer) != null){
+            clearinventory(secondPlayer);
+            setStuff(secondPlayer, arena.getPlayersKit().get(secondPlayer));
+        }
         MessageUtils.sendMessage(firstPlayer, plugin.getMessageManager().getString("Duel start"));
         MessageUtils.sendMessage(secondPlayer, plugin.getMessageManager().getString("Duel start"));
     }
@@ -147,7 +153,7 @@ public class ArenaManager {
         player.teleport(loc);
     }
 
-    public static void storeAndClearInventory(Player player){
+    public static void saveInventory(Player player){
         UUID uuid = player.getUniqueId();
 
         ItemStack[] cont = player.getInventory().getContents();
@@ -155,7 +161,9 @@ public class ArenaManager {
 
         items.put(uuid, cont);
         armor.put(uuid, armcont);
+    }
 
+    public void clearinventory(Player player){
         player.getInventory().clear();
 
         remArmor(player);
@@ -173,6 +181,9 @@ public class ArenaManager {
 
         ItemStack[] contents = items.get(uuid);
         ItemStack[] armorContents = armor.get(uuid);
+
+        if(contents == null && armorContents == null)
+            return;
 
         if(contents != null){
             player.getInventory().setContents(contents);

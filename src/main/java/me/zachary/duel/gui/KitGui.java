@@ -6,6 +6,7 @@ import me.zachary.duel.kits.Kit;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.utils.items.ItemBuilder;
+import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -35,6 +36,18 @@ public class KitGui {
             kitGui.setButton(slot, kitButton);
             slot++;
         }
+        ZButton noKitButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getMessageManager().getString("Gui.Kit.noKit.Material")).parseMaterial())
+        .name(plugin.getMessageManager().getString("Gui.Kit.noKit.Name"))
+        .lore(plugin.getMessageManager().getStringList("Gui.Kit.noKit.Lore"))
+        .build()).withListener(inventoryClickEvent -> {
+            inventoryClickEvent.getWhoClicked().closeInventory();
+            plugin.getArenaManager().joinArena(player, arena, null);
+            kitGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                inventoryClickEvent.getWhoClicked().closeInventory();
+            });
+        });
+        kitGui.setButton(8, noKitButton);
         kitGui.setOnClose(zMenu -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 player.openInventory(zMenu.getInventory());

@@ -59,6 +59,12 @@ public class MessageManager {
         lore.clear();
         /* Kit Gui */
         this.cfg.add("Gui.Kit.Name", "&6Select a kit");
+        this.cfg.add("Gui.Kit.noKit.Material", "GLASS");
+        this.cfg.add("Gui.Kit.noKit.Name", "&6Your current item");
+        lore.add("&7This allow you to duel");
+        lore.add("&7with your own item.");
+        this.cfg.add("Gui.Kit.noKit.Lore", lore.toArray());
+        lore.clear();
         /* PickArena Gui */
         this.cfg.add("Gui.PickArena.Name", "&6Choice an arena for duel");
         this.cfg.add("Gui.PickArena.Cancel.Material", "REDSTONE_BLOCK");
