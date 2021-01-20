@@ -6,6 +6,7 @@ import me.zachary.duel.arenas.ArenaManager;
 import me.zachary.duel.commands.CommandManager;
 import me.zachary.duel.kits.KitManager;
 import me.zachary.duel.listeners.JoinListener;
+import me.zachary.updatechecker.Updatechecker;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.Metrics;
@@ -53,6 +54,7 @@ public final class Duel extends ZachCorePlugin {
             new Placeholder(this).register();
         int pluginId = 9146;
         Metrics metrics = new Metrics(this, pluginId);
+        Updatechecker.updateSongoda(this, 382);
 
         preEnable();
     }
