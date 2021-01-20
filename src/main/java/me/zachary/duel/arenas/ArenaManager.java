@@ -126,6 +126,10 @@ public class ArenaManager {
         secondPlayer.setHealth(20);
         firstPlayer.setFoodLevel(20);
         secondPlayer.setFoodLevel(20);
+        firstPlayer.setFlying(false);
+        secondPlayer.setFlying(false);
+        firstPlayer.setAllowFlight(false);
+        secondPlayer.setAllowFlight(false);
         storeAndClearInventory(firstPlayer);
         storeAndClearInventory(secondPlayer);
         setStuff(firstPlayer, arena.getPlayersKit().get(firstPlayer));
