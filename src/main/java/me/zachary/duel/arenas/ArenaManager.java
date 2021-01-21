@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
@@ -130,6 +131,8 @@ public class ArenaManager {
         secondPlayer.setFlying(false);
         firstPlayer.setAllowFlight(false);
         secondPlayer.setAllowFlight(false);
+        removePotion(firstPlayer);
+        removePotion(secondPlayer);
         saveInventory(firstPlayer);
         saveInventory(secondPlayer);
         if(arena.getPlayersKit().get(firstPlayer) != null){
@@ -210,6 +213,13 @@ public class ArenaManager {
         for (ItemStack itemStack : kit.getKit().getContents()) {
             if(itemStack != null)
                 player.getInventory().addItem(itemStack);
+        }
+    }
+
+    public void removePotion(Player player){
+        for(int i = 1; i <= PotionEffectType.values().length; i++){
+            if(player.hasPotionEffect(PotionEffectType.getById(i)))
+                player.removePotionEffect(PotionEffectType.getById(i));
         }
     }
 }
