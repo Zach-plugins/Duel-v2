@@ -47,7 +47,8 @@ public class KitGui {
                 inventoryClickEvent.getWhoClicked().closeInventory();
             });
         });
-        kitGui.setButton(8, noKitButton);
+        if(plugin.getConfig().getBoolean("Duel with own items"))
+            kitGui.setButton(8, noKitButton);
         kitGui.setOnClose(zMenu -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 player.openInventory(zMenu.getInventory());

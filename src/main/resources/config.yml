@@ -1,3 +1,7 @@
+# Should we allow player to duel with their own item?
+Duel with own items: true
+
+# SQLite or MySQL storage for win/lose duel.
 MySQL:
   # Set to 'true' to use MySQL instead of SQLite for data storage.
   Enabled: false
