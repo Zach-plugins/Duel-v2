@@ -5,6 +5,7 @@ import me.zachary.duel.arenas.Arena;
 import me.zachary.duel.utils.LocationUtils;
 import me.zachary.zachcore.commands.SubCommand;
 import me.zachary.zachcore.utils.MessageUtils;
+import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
@@ -30,7 +31,7 @@ public class CreateArenaCommand extends SubCommand {
             player.sendMessage("/duel createarena X,Y,Z X,Y,Z <ArenaName>");
             return;
         }
-        Arena arena = new Arena(strings[2], Material.valueOf("GRASS_BLOCK"), loc1, loc2);
+        Arena arena = new Arena(strings[2], XMaterial.valueOf("GRASS_BLOCK").parseMaterial(), loc1, loc2);
         plugin.arenaConfig.set("arenas." + strings[2] + ".loc1", LocationUtils.unparseLocToString(loc1));
         plugin.arenaConfig.set("arenas." + strings[2] + ".loc2", LocationUtils.unparseLocToString(loc2));
         plugin.arenaConfig.set("arenas." + strings[2] + ".material", "GRASS_BLOCK");

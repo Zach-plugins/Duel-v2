@@ -4,6 +4,7 @@ import me.zachary.duel.Duel;
 import me.zachary.duel.kits.Kit;
 import me.zachary.duel.utils.LocationUtils;
 import me.zachary.zachcore.utils.MessageUtils;
+import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,7 +37,7 @@ public class ArenaManager {
                 String loc2 = (String) plugin.getConfigurationSectionArena().get(string + ".loc2");
                 String world = (String) plugin.getConfigurationSectionArena().get(string + ".world");
                 String material = (String) plugin.getConfigurationSectionArena().get(string + ".material");
-                Arena arena = new Arena(string, Material.valueOf(material), LocationUtils.parseStringToLoc(loc1, world), LocationUtils.parseStringToLoc(loc2, world));
+                Arena arena = new Arena(string, XMaterial.valueOf(material).parseMaterial(), LocationUtils.parseStringToLoc(loc1, world), LocationUtils.parseStringToLoc(loc2, world));
                 this.addArena(arena);
             }
             plugin.getLog().log("Successful load " + arenas.size() + " arenas.");
