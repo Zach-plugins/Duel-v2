@@ -40,6 +40,7 @@ public final class Duel extends ZachCorePlugin {
     @Override
     public void onEnable() {
         zachGUI = new ZachGUI(this);
+        saveDefaultConfig();
         loadArenaConfig();
         loadKitConfig();
         getArenaManager().loadArena();
