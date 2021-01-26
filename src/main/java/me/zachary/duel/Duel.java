@@ -62,7 +62,7 @@ public final class Duel extends ZachCorePlugin {
 
     @Override
     public void onDisable() {
-
+        getDatabaseManager().closeConnection();
     }
 
     public void loadArenaConfig() {

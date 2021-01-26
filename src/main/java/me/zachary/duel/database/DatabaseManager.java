@@ -151,4 +151,8 @@ public class DatabaseManager {
         }
         getPlayerLose().put(player, (lose + loseNumberToAdd));
     }
+
+    public void closeConnection(){
+        sql.close();
+    }
 }
