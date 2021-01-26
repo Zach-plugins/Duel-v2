@@ -3,6 +3,7 @@ package me.zachary.duel.commands;
 import me.zachary.duel.Duel;
 import me.zachary.zachcore.commands.SubCommand;
 import me.zachary.zachcore.utils.MessageUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,6 +29,7 @@ public class ReloadCommand extends SubCommand {
         plugin.getArenaManager().reloadArena();
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
+        Bukkit.getConsoleSender().sendMessage("§cYou have successful reload the config.");
     }
 
     @Override
