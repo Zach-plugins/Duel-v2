@@ -39,7 +39,7 @@ public class DatabaseManager {
                     ".sqlite");
         }
 
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         if(sql.open()){
@@ -63,7 +63,7 @@ public class DatabaseManager {
     }
 
     public int getWin(Player player){
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         Boolean bool = null;
@@ -84,7 +84,7 @@ public class DatabaseManager {
     }
 
     public void setWin(Player player, int winNumberToAdd){
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         Boolean bool = null;
@@ -108,7 +108,7 @@ public class DatabaseManager {
     }
 
     public int getLose(Player player){
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         Boolean bool = null;
@@ -129,7 +129,7 @@ public class DatabaseManager {
     }
 
     public void setLose(Player player, int loseNumberToAdd){
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         Boolean bool = null;
