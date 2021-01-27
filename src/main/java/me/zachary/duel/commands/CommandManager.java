@@ -46,7 +46,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 if(player == null){
                     sender.sendMessage("You need to be a player to execute this command.");
                 }else{
-                    player.openInventory(new RequestGui(plugin).getRequestGUI(player, null));
+                    if(plugin.players.containsKey(player) || plugin.players.containsValue(player)){
+                        MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Duel already request"));
+                    }else
+                        player.openInventory(new RequestGui(plugin).getRequestGUI(player, null));
                 }
                 return true;
             }
