@@ -50,6 +50,14 @@ public class DatabaseManager {
                     sql.query("CREATE TABLE `Duel_Win` (`uuid` TEXT, `win` INT DEFAULT '0');");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                if(sql != null){
+                    try{
+                        sql.close();
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -103,6 +111,14 @@ public class DatabaseManager {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(sql != null){
+                try{
+                    sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         getPlayerWin().put(player, (win + winNumberToAdd));
     }
@@ -148,6 +164,14 @@ public class DatabaseManager {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(sql != null){
+                try{
+                    sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         getPlayerLose().put(player, (lose + loseNumberToAdd));
     }

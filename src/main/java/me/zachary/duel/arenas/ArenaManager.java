@@ -7,7 +7,6 @@ import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -132,8 +131,9 @@ public class ArenaManager {
         secondPlayer.setFlying(false);
         firstPlayer.setAllowFlight(false);
         secondPlayer.setAllowFlight(false);
-        removePotion(firstPlayer);
-        removePotion(secondPlayer);
+        // TODO: Potion effect here.
+        //removePotion(firstPlayer);
+        //removePotion(secondPlayer);
         saveInventory(firstPlayer);
         saveInventory(secondPlayer);
         if(arena.getPlayersKit().get(firstPlayer) != null){
