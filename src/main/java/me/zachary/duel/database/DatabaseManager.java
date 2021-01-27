@@ -87,6 +87,14 @@ public class DatabaseManager {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(sql != null){
+                try{
+                    sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         return win;
     }
@@ -140,6 +148,14 @@ public class DatabaseManager {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(sql != null){
+                try{
+                    sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         return lose;
     }
