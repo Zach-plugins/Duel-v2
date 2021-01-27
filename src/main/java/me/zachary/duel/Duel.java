@@ -57,7 +57,7 @@ public final class Duel extends ZachCorePlugin {
         Metrics metrics = new Metrics(this, pluginId);
         Updatechecker.updateSongoda(this, 382);
 
-        preEnable();
+        preEnable(this);
     }
 
     @Override
