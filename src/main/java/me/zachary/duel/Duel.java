@@ -103,11 +103,8 @@ public final class Duel extends ZachCorePlugin {
     }
 
     public void saveKitconfig() {
-        try {
-            kitConfig.save(kitFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        kitFile = new File(getDataFolder() + File.separator + "kits.yml");
+        kitConfig = YamlConfiguration.loadConfiguration(kitFile);
     }
 
     public static ZachGUI getGUI() {

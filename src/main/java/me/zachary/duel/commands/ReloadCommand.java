@@ -16,6 +16,7 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public void onCommandByPlayer(Player player, String[] strings) {
+        plugin.saveKitconfig();
         plugin.getKitManager().reloadKit();
         plugin.getArenaManager().reloadArena();
         plugin.saveDefaultConfig();
@@ -25,6 +26,7 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public void onCommandByConsole(ConsoleCommandSender consoleCommandSender, String[] strings) {
+        plugin.saveKitconfig();
         plugin.getKitManager().reloadKit();
         plugin.getArenaManager().reloadArena();
         plugin.saveDefaultConfig();
