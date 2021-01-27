@@ -193,6 +193,7 @@ public class DatabaseManager {
     }
 
     public void closeConnection(){
-        sql.close();
+        if(sql.open())
+            sql.close();
     }
 }
