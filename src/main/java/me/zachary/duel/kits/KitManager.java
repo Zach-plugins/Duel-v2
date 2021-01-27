@@ -48,7 +48,12 @@ public class KitManager {
             ConfigurationSection content = plugin.kitConfig.getConfigurationSection("kits." + string + ".Content");
             Inventory inventory = Bukkit.createInventory(null, 45);
             for (String item : content.getKeys(false)) {
-                ItemStack itemStack = new ItemStack(XMaterial.valueOf(content.getString(item + ".name")).parseMaterial());
+                ItemStack itemStack;
+                if(content.getString(item + ".data") != null){
+                    itemStack = new ItemStack(Material.valueOf(content.getString(item + ".name")), 1, (short) content.getInt(item + ".data"));
+                }else{
+                    itemStack = new ItemStack(XMaterial.valueOf(content.getString(item + ".name")).parseMaterial());
+                }
                 if(content.getString(item + ".enchantment") != null) me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(itemStack, content.getString(item + ".enchantment.name") + "," + content.getString(item + ".enchantment.level"));
                 if(content.getString(item + ".amount") != null) itemStack.setAmount(Integer.parseInt(content.getString(item + ".amount")));
                 inventory.addItem(itemStack);
