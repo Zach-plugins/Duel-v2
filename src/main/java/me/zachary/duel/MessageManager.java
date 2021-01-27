@@ -34,6 +34,7 @@ public class MessageManager {
         this.cfg.add("Duel request send", "&6Successful send a request duel to &e{player}");
         this.cfg.add("Duel accept", "&2{player} &aaccept duel request!");
         this.cfg.add("Duel deny", "&4{player} &cdeny duel request!");
+        this.cfg.add("Duel already request", "&cYou already asked someone in duel.");
         /* Bet Gui */
         this.cfg.add("Gui.Bet.Name", "&6Make your bet");
         this.cfg.add("Gui.Bet.Not enough money", "&cYou don't have enough money to do that.");

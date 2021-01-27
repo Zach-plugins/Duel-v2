@@ -46,6 +46,14 @@ public class ConfirmGui {
 
         confirmGui.setButton(12, confirmButton);
         confirmGui.setButton(14, denyButton);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if(runnableCancel != null)
+                runnableCancel.run();
+            confirmGui.setOnClose(zMenu -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.closeInventory();
+            });
+        }, 200);
         confirmGui.setOnClose(zMenu -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 player.openInventory(zMenu.getInventory());
