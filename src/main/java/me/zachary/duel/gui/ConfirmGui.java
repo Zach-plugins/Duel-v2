@@ -8,6 +8,7 @@ import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitTask;
 
 public class ConfirmGui {
     private Duel plugin;
@@ -20,12 +21,21 @@ public class ConfirmGui {
         ZMenu confirmGui = Duel.getGUI().create(guiName, 3);
         confirmGui.setAutomaticPaginationEnabled(false);
 
+        BukkitTask taskId = Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if(runnableCancel != null)
+                runnableCancel.run();
+            confirmGui.setOnClose(zMenu1 -> {});
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.closeInventory();
+            });
+        }, 200);
         ZButton confirmButton = new ZButton(new ItemBuilder(XMaterial.valueOf("EMERALD_BLOCK").parseMaterial())
                 .name(confirmButtonName)
                 .lore(confirmButtonLore).build()).withListener(inventoryClickEvent -> {
                     if(runnableConfirm != null)
                         runnableConfirm.run();
                     player.closeInventory();
+            Bukkit.getScheduler().cancelTask(taskId.getTaskId());
             confirmGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
@@ -38,6 +48,7 @@ public class ConfirmGui {
                     if(runnableCancel != null)
                         runnableCancel.run();
                     player.closeInventory();
+            Bukkit.getScheduler().cancelTask(taskId.getTaskId());
             confirmGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
@@ -46,14 +57,6 @@ public class ConfirmGui {
 
         confirmGui.setButton(12, confirmButton);
         confirmGui.setButton(14, denyButton);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if(runnableCancel != null)
-                runnableCancel.run();
-            confirmGui.setOnClose(zMenu -> {});
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                player.closeInventory();
-            });
-        }, 200);
         confirmGui.setOnClose(zMenu -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 player.openInventory(zMenu.getInventory());

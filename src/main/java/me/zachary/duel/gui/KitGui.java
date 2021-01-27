@@ -5,6 +5,7 @@ import me.zachary.duel.arenas.Arena;
 import me.zachary.duel.kits.Kit;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
+import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
@@ -18,7 +19,7 @@ public class KitGui {
         this.plugin = plugin;
     }
 
-    public Inventory getKitGui(Player player, Arena arena){
+    public Inventory getKitGui(Player requester, Player requested, Arena arena){
         ZMenu kitGui = Duel.getGUI().create(plugin.getMessageManager().getString("Gui.Kit.Name"), 1);
         kitGui.setAutomaticPaginationEnabled(false);
 
@@ -26,8 +27,7 @@ public class KitGui {
         for (Kit kit : plugin.getKitManager().getKits()) {
             ZButton kitButton = new ZButton(new ItemBuilder(kit.getIcon())
             .name(kit.getKitName()).build()).withListener(inventoryClickEvent -> {
-                inventoryClickEvent.getWhoClicked().closeInventory();
-                plugin.getArenaManager().joinArena(player, arena, kit);
+                kit(requested, requester, arena, kit);
                 kitGui.setOnClose(zMenu -> {});
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     inventoryClickEvent.getWhoClicked().closeInventory();
@@ -40,8 +40,7 @@ public class KitGui {
         .name(plugin.getMessageManager().getString("Gui.Kit.noKit.Name"))
         .lore(plugin.getMessageManager().getStringList("Gui.Kit.noKit.Lore"))
         .build()).withListener(inventoryClickEvent -> {
-            inventoryClickEvent.getWhoClicked().closeInventory();
-            plugin.getArenaManager().joinArena(player, arena, null);
+            kit(requested, requester, arena, null);
             kitGui.setOnClose(zMenu -> {});
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
@@ -51,10 +50,33 @@ public class KitGui {
             kitGui.setButton(8, noKitButton);
         kitGui.setOnClose(zMenu -> {
             Bukkit.getScheduler().runTask(plugin, () -> {
-                player.openInventory(zMenu.getInventory());
+                requested.openInventory(zMenu.getInventory());
             });
         });
 
         return kitGui.getInventory();
+    }
+
+    public void kit(Player requester, Player requested, Arena arena, Kit kit){
+        MessageUtils.sendMessage(requester, plugin.getMessageManager().getString("Duel request send").replace("{player}", requested.getName()));
+        requested.openInventory(new ConfirmGui(plugin).getConfirmGui(requested,
+                plugin.getMessageManager().getString("Gui.Confirm duel.Name").replace("{player}", requester.getName()),
+                plugin.getMessageManager().getString("Gui.Confirm duel.Confirm.Name"),
+                plugin.getMessageManager().getString("Gui.Confirm duel.Cancel.Name"),
+                plugin.getMessageManager().getString("Gui.Confirm duel.Confirm.Lore"),
+                plugin.getMessageManager().getString("Gui.Confirm duel.Cancel.Lore"), () -> {
+                    plugin.players.remove(requested);
+                    MessageUtils.sendMessage(requester, plugin.getMessageManager().getString("Duel accept").replace("{player}", requested.getName()));
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        requester.closeInventory();
+                        requester.openInventory(new BetGui(plugin).getBetGui(requester, arena,0, "bet2", kit));
+                        requested.closeInventory();
+                        requested.openInventory(new BetGui(plugin).getBetGui(requested, arena, 0, "bet1", kit));
+                    });
+                }, () -> {
+                    plugin.players.remove(requested);
+                    MessageUtils.sendMessage(requester, plugin.getMessageManager().getString("Duel deny").replace("{player}", requested.getName()));
+                    requested.closeInventory();
+                }));
     }
 }

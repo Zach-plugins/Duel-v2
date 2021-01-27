@@ -2,6 +2,7 @@ package me.zachary.duel.gui;
 
 import me.zachary.duel.Duel;
 import me.zachary.duel.arenas.Arena;
+import me.zachary.duel.kits.Kit;
 import me.zachary.duel.utils.LoreUtils;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
@@ -22,7 +23,7 @@ public class BetGui {
         this.plugin = plugin;
     }
 
-    public Inventory getBetGui(Player player, Arena arena, double playerBet, String bet){
+    public Inventory getBetGui(Player player, Arena arena, double playerBet, String bet, Kit kit){
         ZMenu betGui = Duel.getGUI().create(plugin.getMessageManager().getString("Gui.Bet.Name"), 1);
         betGui.setAutomaticPaginationEnabled(false);
 
@@ -36,9 +37,9 @@ public class BetGui {
             });
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if(EconomyManager.getBalance(player) >= playerBet + 1000)
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 1000, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 1000, bet, kit));
                 else{
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet, kit));
                     MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                 }
             });
@@ -54,9 +55,9 @@ public class BetGui {
                     inventoryClickEvent.getWhoClicked().closeInventory();
                 });
                 if(EconomyManager.getBalance(player) >= playerBet + 10000)
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 10000, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 10000, bet, kit));
                 else{
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet, kit));
                     MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                 }
             });
@@ -72,9 +73,9 @@ public class BetGui {
             });
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if(EconomyManager.getBalance(player) >= playerBet + 100000)
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 100000, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + 100000, bet, kit));
                 else{
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet, kit));
                     MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                 }
             });
@@ -92,18 +93,18 @@ public class BetGui {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     if(NumberUtils.tryParseDouble(chatConfirmEvent.getMessage())){
                         if(EconomyManager.getBalance(player) >= playerBet + Double.parseDouble(chatConfirmEvent.getMessage()))
-                            inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + Double.parseDouble(chatConfirmEvent.getMessage()), bet));
+                            inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet + Double.parseDouble(chatConfirmEvent.getMessage()), bet, kit));
                         else{
-                            inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
+                            inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet, kit));
                             MessageUtils.sendMessage(player, plugin.getMessageManager().getString("Gui.Bet.Not enough money"));
                         }
                     }else{
-                        inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
+                        inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet, kit));
                     }
                 });
             }).setTimeOut((Player) inventoryClickEvent.getWhoClicked(), 100, () -> {
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet));
+                    inventoryClickEvent.getWhoClicked().openInventory(getBetGui(player, arena, playerBet, bet, kit));
                 });
             });
         });
@@ -122,7 +123,7 @@ public class BetGui {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
             });
-            player.openInventory(new KitGui(plugin).getKitGui(player, arena));
+            plugin.getArenaManager().joinArena(player, arena, kit);
         });
 
         betGui.setButton(0, onekButton);
