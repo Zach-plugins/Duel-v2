@@ -34,6 +34,7 @@ public class RequestGui {
         for (Player p : players) {
             if(p == player
                     || plugin.players.containsKey(p)
+                    || plugin.players.containsValue(p)
                     || plugin.getArenaManager().getArenaByPlayer(p) != null) continue;
             if(searchName != null)
                 if(!p.getName().toLowerCase().startsWith(searchName.toLowerCase())) continue;
