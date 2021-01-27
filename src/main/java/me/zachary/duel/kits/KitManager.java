@@ -1,8 +1,6 @@
 package me.zachary.duel.kits;
 
 import me.zachary.duel.Duel;
-import me.zachary.duel.arenas.Arena;
-import me.zachary.duel.utils.LocationUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
@@ -33,16 +31,16 @@ public class KitManager {
             ItemStack leggings = new ItemBuilder(XMaterial.valueOf(plugin.getConfigurationSectionKit().getString(string + ".Leggings.name")).parseMaterial()).build();
             ItemStack boots = new ItemBuilder(XMaterial.valueOf(plugin.getConfigurationSectionKit().getString(string + ".Boots.name")).parseMaterial()).build();
             if(plugin.getConfigurationSectionKit().getString(string + ".Helmet.enchantment") != null){
-                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(helmet, plugin.getConfigurationSectionKit().getString(".Helmet.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(".Helmet.enchantment.level"));
+                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(helmet, plugin.getConfigurationSectionKit().getString(string + ".Helmet.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(string + ".Helmet.enchantment.level"));
             }
             if(plugin.getConfigurationSectionKit().getString(string + ".Chestplate.enchantment") != null){
-                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(chestplate, plugin.getConfigurationSectionKit().getString(".Chestplate.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(".Chestplate.enchantment.level"));
+                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(chestplate, plugin.getConfigurationSectionKit().getString(string + ".Chestplate.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(string + ".Chestplate.enchantment.level"));
             }
             if(plugin.getConfigurationSectionKit().getString(string + ".Leggings.enchantment") != null){
-                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(leggings, plugin.getConfigurationSectionKit().getString(".Leggings.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(".Leggings.enchantment.level"));
+                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(leggings, plugin.getConfigurationSectionKit().getString(string + ".Leggings.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(string + ".Leggings.enchantment.level"));
             }
             if(plugin.getConfigurationSectionKit().getString(string + ".Boots.enchantment") != null){
-                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(boots, plugin.getConfigurationSectionKit().getString(".Boots.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(".Boots.enchantment.level"));
+                me.zachary.zachcore.utils.xseries.XEnchantment.addEnchantFromString(boots, plugin.getConfigurationSectionKit().getString(string + ".Boots.enchantment.name") + "," + plugin.getConfigurationSectionKit().getString(string + ".Boots.enchantment.level"));
             }
 
             ConfigurationSection content = plugin.kitConfig.getConfigurationSection("kits." + string + ".Content");
